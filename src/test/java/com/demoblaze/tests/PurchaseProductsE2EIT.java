@@ -49,6 +49,7 @@ class PurchaseProductsE2EIT {
         customer.attemptsTo(
 
                 OpenDemoBlaze.homePage(),
+                VerifyEmptyCart.beforeShopping(),
 
                 AddProductToCart.called(
                         "Samsung galaxy s6"
