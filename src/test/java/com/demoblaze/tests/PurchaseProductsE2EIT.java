@@ -83,7 +83,9 @@ class PurchaseProductsE2EIT {
                         CheckoutPage.SUCCESS_MESSAGE
                 ).hasText(
                         "Thank you for your purchase!"
-                )
+                ),
+
+                ClosePurchaseConfirmation.andReturnToCatalog()
         );
     }
 }
