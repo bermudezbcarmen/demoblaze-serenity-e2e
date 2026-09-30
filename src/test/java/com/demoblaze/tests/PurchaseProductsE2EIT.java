@@ -17,7 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 @DisplayName("DemoBlaze purchase flow")
-class PurchaseProductsE2ETest {
+class PurchaseProductsE2EIT {
 
     private Actor customer;
 
