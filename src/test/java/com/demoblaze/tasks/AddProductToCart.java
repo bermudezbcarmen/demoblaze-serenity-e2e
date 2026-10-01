@@ -36,7 +36,6 @@ public class AddProductToCart implements Task {
             message.set(text);
         };
 
-        // Subscribe before clicking so a fast response cannot be missed.
         page.onDialog(handleConfirmation);
         try {
             actor.attemptsTo(Click.on(ADD_TO_CART));

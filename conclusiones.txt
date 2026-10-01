@@ -1,0 +1,24 @@
+CONCLUSIONES
+
+Se automatizó el flujo E2E de compra en DemoBlaze: agregar dos productos, visualizar y validar su presencia en el carrito, completar el formulario y confirmar la compra.
+
+La separación mediante Screenplay en tareas, elementos de interfaz y modelos facilita la lectura, reutilización y mantenimiento del código.
+
+Las assertions en cada página y modal permiten detectar problemas de navegación antes de continuar. Las esperas automáticas y la confirmación de cada agregado reducen el riesgo de fallos por sincronización.
+
+DemoBlaze utiliza un diálogo JavaScript después de agregar productos al carrito. Este comportamiento fue manejado desde la API de Playwright.
+
+El escenario verifica un carrito inicial vacío y utiliza un contexto de navegador aislado. Al finalizar la compra, comprueba el cierre de la confirmación y el regreso al catálogo.
+
+La cobertura actual corresponde al flujo exitoso y valida la presencia de ambos productos y el mensaje de confirmación. No comprueba precios, importe total ni datos del comprobante.
+
+
+MEJORAS FUTURAS
+
+- Parametrizar los productos.
+- Externalizar completamente los datos de compra.
+- Ejecutar múltiples navegadores.
+- Incorporar escenarios negativos.
+- Incorporar ejecución mediante CI/CD.
+- Agregar validación del valor total del carrito.
+- Agregar un assertions cada que se ingresa a una pagina.
