@@ -3,29 +3,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="
-            http://maven.apache.org/POM/4.0.0
-            https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- 1. Información del proyecto -->
 
     <groupId>com.demoblaze</groupId>
     <artifactId>demoblaze-serenity-e2e</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
+    <!-- 2. Versiones y configuración -->
+
     <properties>
+
         <maven.compiler.release>17</maven.compiler.release>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>
+            UTF-8
+        </project.build.sourceEncoding>
 
         <serenity.version>5.3.7</serenity.version>
+        <cucumber.version>7.34.2</cucumber.version>
         <playwright.version>1.58.0</playwright.version>
         <junit.version>6.0.3</junit.version>
         <maven.test.plugins.version>3.5.2</maven.test.plugins.version>
+
     </properties>
+
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>net.serenity-bdd</groupId>
                 <artifactId>serenity-bom</artifactId>
@@ -33,21 +43,40 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <!-- 3. Dependencias -->
+
     <dependencies>
 
+        <!-- Serenity principal -->
         <dependency>
             <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-screenplay-playwright</artifactId>
+            <artifactId>serenity-core</artifactId>
             <scope>test</scope>
         </dependency>
 
+
+        <!-- Screenplay -->
         <dependency>
             <groupId>net.serenity-bdd</groupId>
             <artifactId>serenity-screenplay</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- Playwright -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-screenplay-playwright</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -73,61 +102,89 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Serenity + Cucumber -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-cucumber</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- Cucumber ejecutado con JUnit Platform -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- Runner JUnit Platform -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
+
+    <!-- 4. Plugins -->
+
     <build>
+
         <plugins>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.2.0</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-            </plugin>
+            <!-- Compilar Java -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
+
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.1</version>
-            </plugin>
+
+
+            <!-- Ejecutar los tests -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.test.plugins.version}</version>
+
                 <configuration>
+
+                    <useModulePath>false</useModulePath>
+
                     <includes>
                         <include>**/*Test.java</include>
+                        <include>**/*TestSuite.java</include>
                     </includes>
                     <excludes>
                         <exclude>**/*IT.java</exclude>
                     </excludes>
+
                 </configuration>
+
             </plugin>
+
+
+            <!-- Generar reporte Serenity -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven.test.plugins.version}</version>
-
                 <configuration>
+                    <useModulePath>false</useModulePath>
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
                     <failIfNoTests>true</failIfNoTests>
                 </configuration>
-
                 <executions>
                     <execution>
                         <goals>
@@ -139,23 +196,39 @@
             </plugin>
 
             <plugin>
-                <groupId>net.serenity-bdd.maven.plugins</groupId>
-                <artifactId>serenity-maven-plugin</artifactId>
+
+                <groupId>
+                    net.serenity-bdd.maven.plugins
+                </groupId>
+
+                <artifactId>
+                    serenity-maven-plugin
+                </artifactId>
+
                 <version>${serenity.version}</version>
 
                 <executions>
+
                     <execution>
+
                         <id>serenity-reports</id>
-                        <phase>post-integration-test</phase>
+
+                        <phase>
+                            post-integration-test
+                        </phase>
 
                         <goals>
                             <goal>aggregate</goal>
                         </goals>
+
                     </execution>
+
                 </executions>
+
             </plugin>
 
         </plugins>
+
     </build>
 
 </project>
